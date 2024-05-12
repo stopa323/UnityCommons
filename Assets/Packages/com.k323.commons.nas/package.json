@@ -1,0 +1,10 @@
+{
+  "name": "com.k323.nas",
+  "version": "0.1.0",
+  "displayName": "Network Action Syste,",
+  "description": "Networked action system based on Unity multiplayer example",
+  "unity": "2023.1",
+  "dependencies": {
+    "com.unity.netcode.gameobjects": "1.7.1"
+  }
+}
