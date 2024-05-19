@@ -85,6 +85,17 @@ namespace k323.Commons.NetworkActionSystem {
         /// <returns>true to keep running, false to stop. The Action will stop by default when its duration expires, if it has a duration set. </returns>
         public abstract bool OnUpdate(NetworkBehaviour serverCharacter);
 
+        public enum GameplayActivity {
+            StoppedChargingUp
+        }
+
+        /// <summary>
+        /// Called on active Actions to let them know when a notable gameplay event happens.
+        /// </summary>
+        /// <param name="serverCharacter"></param>
+        /// <param name="activityType"></param>
+        public virtual void OnGameplayActivity(NetworkBehaviour serverCharacter, GameplayActivity activityType) { }
+
         /// <summary>
         /// This will get called when the Action gets canceled. The Action should clean up any ongoing effects at this point.
         /// (e.g. an Action that involves moving should cancel the current active move).
@@ -118,6 +129,13 @@ namespace k323.Commons.NetworkActionSystem {
         public virtual bool OnUpdateClient(NetworkBehaviour clientCharacter) {
             return ActionConclusion.Continue;
         }
+
+        /// <summary>
+        /// Called when this action has finished "charging up". (Which is only meaningful for a
+        /// few types of actions -- it is not called for other actions.)
+        /// </summary>
+        /// <param name="finalChargeUpPercentage"></param>
+        public virtual void OnStoppedChargingUpClient(NetworkBehaviour clientCharacter, float finalChargeUpPercentage) { }
 
         /// <summary>
         /// End is always called when the ActionFX finishes playing. This is a good place for derived classes to put

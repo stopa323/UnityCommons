@@ -44,6 +44,12 @@ namespace k323.Commons.NetworkActionSystem {
             }
         }
 
+        public void OnStoppedChargingUp(float finalChargeUpPercentage) {
+            foreach (var actionFX in playingActions) {
+                actionFX.OnStoppedChargingUpClient(ClientCharacter, finalChargeUpPercentage);
+            }
+        }
+
         //helper wrapper for a FindIndex call on m_PlayingActions.
         private int FindAction(ActionID actionID, bool anticipatedOnly) {
             return playingActions.FindIndex(a => a.ActionID == actionID && (!anticipatedOnly || a.AnticipatedClient));

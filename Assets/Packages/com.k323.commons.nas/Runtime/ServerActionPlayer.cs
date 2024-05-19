@@ -101,6 +101,20 @@ namespace k323.Commons.NetworkActionSystem {
             return keepGoing && !timeExpired;
         }
 
+        /// <summary>
+        /// Tells all active Actions that a particular gameplay event happened, such as being hit,
+        /// getting healed, dying, etc. Actions can change their behavior as a result.
+        /// </summary>
+        /// <param name="activityThatOccurred">The type of event that has occurred</param>
+        public virtual void OnGameplayActivity(Action.GameplayActivity activityThatOccurred) {
+            if (actionQueue.Count > 0) {
+                actionQueue[0].OnGameplayActivity(serverCharacter, activityThatOccurred);
+            }
+            foreach (var action in nonBlockingActions) {
+                action.OnGameplayActivity(serverCharacter, activityThatOccurred);
+            }
+        }
+
         // Try release action object to pool
         private void TryReturnAction(Action action) {
             if (actionQueue.Contains(action)) {
