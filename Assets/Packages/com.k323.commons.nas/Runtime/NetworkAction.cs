@@ -7,7 +7,7 @@ namespace k323.Commons.NetworkActionSystem {
     /// <summary>
     /// The abstract parent class that all Actions derive from.
     /// </summary>
-    public abstract class Action : ScriptableObject {
+    public abstract class NetworkAction : ScriptableObject {
         /// <summary>
         /// Unique ID of action - set at runtime by ActionPrototypeStore class.
         /// If action is not itself a prototype - will contain the action id of the prototype reference. This field

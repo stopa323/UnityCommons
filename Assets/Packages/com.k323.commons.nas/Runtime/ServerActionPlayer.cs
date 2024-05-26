@@ -8,16 +8,16 @@ namespace k323.Commons.NetworkActionSystem {
         NetworkBehaviour serverCharacter;
 
         // list of enqueued action, executed one at the time
-        List<Action> actionQueue;
+        List<NetworkAction> actionQueue;
 
         // list of actions runnig in background, executed in parallel
-        List<Action> nonBlockingActions;
+        List<NetworkAction> nonBlockingActions;
 
         public ServerActionPlayer(NetworkBehaviour serverCharacter) {
             this.serverCharacter = serverCharacter;
 
-            actionQueue = new List<Action>();
-            nonBlockingActions = new List<Action>();
+            actionQueue = new List<NetworkAction>();
+            nonBlockingActions = new List<NetworkAction>();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace k323.Commons.NetworkActionSystem {
 
             // if there's non-blocking actions, update them! We do this in reverse-order so we can easily remove expired actions.
             for (int i = nonBlockingActions.Count - 1; i >= 0; --i) {
-                Action runningAction = nonBlockingActions[i];
+                NetworkAction runningAction = nonBlockingActions[i];
                 if (!UpdateAction(runningAction)) {
                     // it's dead!
                     runningAction.End(serverCharacter);
@@ -93,7 +93,7 @@ namespace k323.Commons.NetworkActionSystem {
         /// Calls a given Action's Update() and decides if the action is still alive.
         /// </summary>
         /// <returns>true if the action is still active, false if it's dead</returns>
-        private bool UpdateAction(Action action) {
+        private bool UpdateAction(NetworkAction action) {
             bool keepGoing = action.OnUpdate(serverCharacter);
             // non-positive value is a sentinel indicating the duration is indefinite.
             bool expirable = action.Config.DurationSeconds > 0f;
@@ -106,7 +106,7 @@ namespace k323.Commons.NetworkActionSystem {
         /// getting healed, dying, etc. Actions can change their behavior as a result.
         /// </summary>
         /// <param name="activityThatOccurred">The type of event that has occurred</param>
-        public virtual void OnGameplayActivity(Action.GameplayActivity activityThatOccurred) {
+        public virtual void OnGameplayActivity(NetworkAction.GameplayActivity activityThatOccurred) {
             if (actionQueue.Count > 0) {
                 actionQueue[0].OnGameplayActivity(serverCharacter, activityThatOccurred);
             }
@@ -116,7 +116,7 @@ namespace k323.Commons.NetworkActionSystem {
         }
 
         // Try release action object to pool
-        private void TryReturnAction(Action action) {
+        private void TryReturnAction(NetworkAction action) {
             if (actionQueue.Contains(action)) {
                 return;
             }

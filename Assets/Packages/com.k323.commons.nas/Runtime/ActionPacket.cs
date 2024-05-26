@@ -20,7 +20,7 @@ namespace k323.Commons.NetworkActionSystem {
             HasTargetIds = 1 << 1,
         }
 
-        public static ActionPacket Create(Action action) => 
+        public static ActionPacket Create(NetworkAction action) => 
             new() { ActionID = action.ActionID };
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter {

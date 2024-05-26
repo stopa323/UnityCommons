@@ -5,10 +5,10 @@ using UnityEngine;
 namespace k323.Commons.NetworkActionSystem {
     public class ActionPrototypeStore : MonoBehaviour {
         [Tooltip("Place here all action prototypes that you want to be able to use in the game.")]
-        [SerializeField] private List<Action> actionPrototypes;
+        [SerializeField] private List<NetworkAction> actionPrototypes;
 
         private static ActionPrototypeStore main;
-        private List<Action> allActions;
+        private List<NetworkAction> allActions;
         
         protected virtual void Awake() {
             if (main != null) {
@@ -28,8 +28,8 @@ namespace k323.Commons.NetworkActionSystem {
 		}
 
         protected virtual void InitializeStore() {
-            var uniqueActions = new HashSet<Action>(actionPrototypes);
-            allActions = new List<Action>(uniqueActions.Count);
+            var uniqueActions = new HashSet<NetworkAction>(actionPrototypes);
+            allActions = new List<NetworkAction>(uniqueActions.Count);
 
             int i = 0;
             foreach (var uniqueAction in uniqueActions) {
@@ -39,7 +39,7 @@ namespace k323.Commons.NetworkActionSystem {
             }
         }
 
-        public static Action GetActionPrototypeByID(ActionID index) {
+        public static NetworkAction GetActionPrototypeByID(ActionID index) {
             if (main == null) {
                 Debug.LogError("ActionPrototypeStore is not initialized.");
                 return null;

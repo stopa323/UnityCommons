@@ -10,7 +10,7 @@ namespace k323.Commons.NetworkActionSystem {
     public sealed class ClientActionPlayer {
         public NetworkBehaviour ClientCharacter { get; private set; }
 
-        List<Action> playingActions = new List<Action>();
+        List<NetworkAction> playingActions = new List<NetworkAction>();
 
         public ClientActionPlayer(NetworkBehaviour clientCharacter) {
             ClientCharacter = clientCharacter;
@@ -75,7 +75,7 @@ namespace k323.Commons.NetworkActionSystem {
         public void AnticipateAction(ref ActionPacket data) {
             var actionFX = ActionFactory.CreateActionFromData(ref data);
 
-            if (actionFX.Config.IsAnticipatable && Action.ShouldClientAnticipate(ClientCharacter, ref data)) {
+            if (actionFX.Config.IsAnticipatable && NetworkAction.ShouldClientAnticipate(ClientCharacter, ref data)) {
                 actionFX.AnticipateActionClient(ClientCharacter);
                 playingActions.Add(actionFX);
             }
