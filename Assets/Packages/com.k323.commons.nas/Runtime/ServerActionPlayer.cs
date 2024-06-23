@@ -52,6 +52,23 @@ namespace k323.Commons.NetworkActionSystem {
             }
         }
 
+        /// <summary>
+        /// If an Action is active, fills out 'data' param and returns true. If no Action is active, returns false.
+        /// This only refers to the blocking action! (multiple non-blocking actions can be running in the background, and
+        /// this will still return false).
+        /// </summary>
+        public bool GetActiveActionInfo(out ActionPacket packet)
+        {
+            if (actionQueue.Count > 0) {
+                packet = actionQueue[0].Data;
+                return true;
+            }
+            else {
+                packet = new ActionPacket();
+                return false;
+            }
+        }
+
         public void OnUpdate() {
             // if there's a blocking action, update it
             if (actionQueue.Count > 0) {
